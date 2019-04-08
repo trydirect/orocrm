@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+  orocrm:
+    build: .
+    image: ${REGISTRY}optimum/crm:orocrm-2.6.1-s
+    container_name: orocrm
+    restart: always
+    ports:
+          - "443:443"
+          - "80:80"
+    volumes:
+        - ./:{{DOCROOT}}
+        - ./nginx:/etc/nginx/conf.d/
+        - ./certs/letsencrypt:/etc/letsencrypt
+        - ./certs/ssl:/etc/nginx/ssl
+        - ./cron:/var/spool/cron/crontabs
+    entrypoint: /usr/bin/supervisord -c /etc/supervisor/supervisord.conf -n
+    working_dir: /home/${APPUSER}
