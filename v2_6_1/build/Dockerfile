@@ -6,7 +6,7 @@ RUN apt-get update -y -qq; apt-get install -y -qq nginx sudo supervisor curl cro
     php7.1-curl php7.1-fpm php7.1-gd php7.1-intl php7.1-mcrypt php7.1-mysql php7.1-soap \
     php7.1-xml php7.1-zip php7.1-imagick php7.1-opcache libfreetype6-dev libmcrypt-dev libpng12-dev; \
     rm -rf /etc/nginx/sites-available/default;rm -rf /etc/nginx/sites-enabled/default;mkdir /run/php; \
-    groupadd -r -g 20000  orocrm; useradd -r -u 20000 -g 20000 -m -c "app account" -d /home/orocrm -s /bin/bash orocrm; \
+    groupadd -r -g 2000  orocrm; useradd -r -u 2000 -g 2000 -m -c "app account" -d /home/orocrm -s /bin/bash orocrm; \
     mkdir -p /opt/letsencrypt
 
 USER orocrm
@@ -38,4 +38,3 @@ ADD ./scripts/letsencrypt-auto /opt/letsencrypt/letsencrypt-auto
 RUN chmod +x /opt/letsencrypt/letsencrypt-auto; /opt/letsencrypt/letsencrypt-auto  --os-packages-only --install-only --non-interactive
 
 RUN apt-get clean; apt-get autoclean; apt-get autoremove -y -qq
-
