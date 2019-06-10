@@ -1,19 +1,60 @@
-version: '2'
+version: '2.1'
+
+volumes:
+    orocrm-db:
+      driver: local
+    oroweb:
+      driver: local
 
 services:
   orocrm:
-    build: .
-    image: ${REGISTRY}optimum/crm:orocrm-2.6.1-s
+    image: trydirect/orocrm:2.6
+    build: ""
     container_name: orocrm
+    hostname: orocrm
     restart: always
     ports:
-          - "443:443"
-          - "80:80"
+      # - "443:443"
+      - "80:80"
     volumes:
-        - ./:{{DOCROOT}}
-        - ./nginx:/etc/nginx/conf.d/
-        - ./certs/letsencrypt:/etc/letsencrypt
-        - ./certs/ssl:/etc/nginx/ssl
-        - ./cron:/var/spool/cron/crontabs
+#        - ./web:/home/orocrm
+        - ./configs/supervisord/orocrm.conf:/etc/supervisord/conf.d/orocrm.conf
+        - ./configs/nginx/nginx.conf:/etc/nginx/nginx.conf
+        - ./configs/nginx/conf.d:/etc/nginx/conf.d
+        - ./configs/supervisord/nginx.conf:/etc/supervisor/conf.d/nginx.conf
+        - ./configs/cron/nginx:/var/spool/cron/crontabs
+    links:
+        - db
     entrypoint: /usr/bin/supervisord -c /etc/supervisor/supervisord.conf -n
-    working_dir: /home/${APPUSER}
+    working_dir: /home/orocrm
+    env_file:
+      .env
+
+  db:
+    image: mysql:5.7
+    container_name: orocrm_db
+    restart: always
+    volumes:
+        - orocrm-db:/var/lib/mysql
+    env_file:
+      .env
+
+  # entry point
+#  nginx:
+#    image: trydirect/nginx:latest
+#    container_name: nginx
+#    restart: always
+#    depends_on:
+#      - orocrm
+#    ports:
+#      # - "443:443"
+#      - "80:80"
+#    links:
+#      - orocrm
+#    volumes:
+#      - ./configs/nginx/nginx.conf:/etc/nginx/nginx.conf
+#      - ./configs/nginx/conf.d:/etc/nginx/conf.d
+#      - ./configs/supervisord/nginx.conf:/etc/supervisor/conf.d/nginx.conf
+#      - ./configs/cron/nginx:/var/spool/cron/crontabs
+#      - oroweb:/usr/share/nginx/www
+#    entrypoint: /usr/bin/supervisord -c /etc/supervisor/supervisord.conf -n
