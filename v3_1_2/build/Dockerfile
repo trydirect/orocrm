@@ -12,16 +12,22 @@ RUN yum install -y php-fpm php-cli php-pdo php-mysqlnd php-xml php-soap php-gd p
     && php -r "unlink('composer-setup.php');" \
     && mv composer.phar /usr/bin/composer
 
-# orocommerce v1.6.13
+# orocommerce v3.1.2
 WORKDIR /usr/src
-RUN git clone -b 2.6.13 https://github.com/oroinc/crm-application.git
+RUN git clone -b 3.1.2 https://github.com/oroinc/crm-application.git
 WORKDIR /usr/src/crm-application
 RUN curl -s https://getcomposer.org/installer | php \
     && composer install --prefer-dist --no-dev ; exit 0 \
     && echo "_*_ Vendor collected! _*_"
 
+
 WORKDIR /usr/src
+COPY configs/orocrm/functions.php crm-application/vendor/gos/pnctl-event-loop-emitter/src/functions.php
+
+
 RUN tar -zcvf app.tar.gz crm-application
+
+# COPY src/app.tar.gz /usr/src
 
 RUN groupadd -r -g 20005  orocommerce; useradd -r -u 20005 -g 20005 -m -c "app user" -d /home/orocommerce -s /bin/bash orocommerce \
     && mkdir -p /var/log/supervisord \
@@ -42,7 +48,9 @@ ADD configs/php/www.conf /etc/php-fpm.d/www.conf
 ADD configs/supervisord/orocrm.conf /etc/supervisor/conf.d/orocrm.conf
 ADD configs/supervisord/supervisord.conf /etc/supervisor/supervisord.conf
 
-RUN chown orocommerce:orocommerce  /usr/src/app.tar.gz
+RUN chown orocommerce:orocommerce  /usr/src/app.tar.gz \
+    && mkdir -p /home/orocrm/.npm \
+    && chown -R orocommerce. /home
 
 WORKDIR /home/orocrm
 USER orocommerce
