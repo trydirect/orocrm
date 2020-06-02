@@ -1,11 +1,11 @@
 # This file is auto-generated during the composer install
 parameters:
     database_driver: pdo_mysql
-    database_host: 127.0.0.1
-    database_port: null
-    database_name: oro_crm
-    database_user: root
-    database_password: null
+    database_host: orocrmdb
+    database_port: 3306
+    database_name: orocrm
+    database_user: orocrm
+    database_password: orocrm
     database_driver_options: {  }
     mailer_transport: smtp
     mailer_host: 127.0.0.1

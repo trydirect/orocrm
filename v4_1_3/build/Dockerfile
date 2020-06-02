@@ -41,7 +41,7 @@ RUN mv composer.phar /usr/local/bin/composer
 
 WORKDIR /var/www/html
 
-ARG OROCRM_VERSION=4.1.3
+ARG OROCRM_VERSION=4.1.4
 
 RUN git clone -b ${OROCRM_VERSION} "https://github.com/oroinc/crm-application" orocrm
 RUN cd orocrm && composer install --prefer-dist --no-dev

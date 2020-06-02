@@ -1,0 +1,36 @@
+version: '2.1'
+
+volumes:
+  orocrm-db:
+    driver: local
+
+services:
+  orocrm:
+    image: trydirect/orocrm:4.1.4
+    build:
+     context: .
+    container_name: orocrm
+    restart: always
+    ports:
+          - "443:443"
+          - "80:80"
+    volumes:
+        - ./configs/php/fpm/php.ini:/usr/local/etc/php/php.ini
+        - ./configs/nginx/orocrm.conf:/etc/nginx/conf.d/default.conf
+        - ./configs/supervisord/orocrm.conf:/etc/supervisor/conf.d/orocrm.conf
+        - ./configs/orocrm/parameters.yml:/var/www/html/orocrm/config/parameters.yml
+    entrypoint: /usr/bin/supervisord -c /etc/supervisor/supervisord.conf -n
+
+  db:
+    image: mysql:5.7
+    container_name: orocrmdb
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 30s
+      retries: 10
+    volumes:
+      - orocrm-db:/var/lib/mysql
+      - ./scripts/mysql.sh:/scripts/mysql.sh
+    env_file:
+      - .env
