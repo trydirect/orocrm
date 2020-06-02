@@ -34,3 +34,8 @@ $ php bin/console oro:install
    --timeout=10000
 
 ```
+
+
+## Quick deployment to cloud
+##### Amazon AWS, Digital Ocean, Hetzner and others
+[<img src="https://img.shields.io/badge/quick%20deploy-%40try.direct-brightgreen.svg">](https://try.direct/server/user/deploy/Im9yb2NybXw2fDYi.EAoFeA.415nFHXyG9VetN493hGPReKR5OE/)
