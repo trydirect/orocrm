@@ -10,7 +10,7 @@ $ docker-compose up -d
 Install application and admin user with Installation Wizard by opening install.php in the browser or from CLI:
 
 ```
-$ docker-compose exec orocommerce sh -c "cd orocommerce && php bin/console oro:install --env=prod --timeout=10000"
+$ docker-compose exec orocrm sh -c "cd orocrm && php bin/console oro:install --env=prod --timeout=10000"
 
 ```
 
