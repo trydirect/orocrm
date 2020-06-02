@@ -1,18 +1,41 @@
-[![Build Status](https://travis-ci.com/trydirect/orocrm.svg?branch=master)](https://travis-ci.com/trydirect/orocrm)
-![Docker Stars](https://img.shields.io/docker/stars/trydirect/orocrm.svg)
-![Docker Pulls](https://img.shields.io/docker/pulls/trydirect/orocrm.svg)
-![Docker Automated](https://img.shields.io/docker/cloud/automated/trydirect/orocrm.svg)
-![Docker Build](https://img.shields.io/docker/cloud/build/trydirect/orocrm.svg)
-[![Gitter chat](https://badges.gitter.im/trydirect/community.png)](https://gitter.im/try-direct/community)
+# OroCRM 4.1.4
 
+Deploy OroCRM with docker-compose
 
-# orocrm
-OROCRM
+```
+$ docker-compose up -d
+
+```
+
+Install application and admin user with Installation Wizard by opening install.php in the browser or from CLI:
+
+```
+$ docker-compose exec orocommerce sh -c "cd orocommerce && php bin/console oro:install --env=prod --timeout=10000"
+
+```
+
+# Silent Installation
+
+For silent installation, use -n (no interaction) and -q (silence the output messages) parameters, and set the required parameters value, like in the example below. Replace items in bold with the information specific to your deployment.
+
+```
+$ php bin/console oro:install 
+   --application-url=<URL that is configured as an entry point for Oro application>
+   --env=prod
+   --user-name=admin
+   --user-email=admin@example.com
+   --user-firstname=John
+   --user-lastname=Doe
+   --user-password=admin
+   --sample-data=y
+   --organization-name="Acme, Inc"
+   --language=en
+   --formatting-code=en
+   --timeout=10000
+
+```
 
 
 ## Quick deployment to cloud
 ##### Amazon AWS, Digital Ocean, Hetzner and others
 [<img src="https://img.shields.io/badge/quick%20deploy-%40try.direct-brightgreen.svg">](https://try.direct/server/user/deploy/Im9yb2NybXw2fDYi.EAoFeA.415nFHXyG9VetN493hGPReKR5OE/)
-
-
-
