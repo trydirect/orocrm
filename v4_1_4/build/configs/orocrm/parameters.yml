@@ -25,7 +25,7 @@ parameters:
     websocket_backend_ssl_context_options: {  }
     web_backend_prefix: ''
     session_handler: session.handler.native_file
-    secret: ThisTokenIsNotSoSecretChangeIt
+    secret: NotaSecretToken
     installed: null
     assets_version: e1f63d4f
     assets_version_strategy: time_hash
